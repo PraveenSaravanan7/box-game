@@ -3,3 +3,9 @@
 *::after {
   box-sizing: border-box;
 }
+
+body {
+  background-color: #f2df3a;
+  margin: 0;
+  font-family: din-round, sans-serif;
+}
