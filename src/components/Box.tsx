@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { MyGame } from "../App";
@@ -18,7 +18,7 @@ export const Box = ({ boxIndex }: { boxIndex: number }) => {
 
   const activeStyle = isActive ? styles.active : "";
 
-  const updateBoxInGame = () => {
+  const updateBoxInGame = useCallback(() => {
     if (boxRef.current) {
       setIsActive(true);
 
@@ -30,7 +30,7 @@ export const Box = ({ boxIndex }: { boxIndex: number }) => {
         index: boxIndex,
       });
     }
-  };
+  }, [boxIndex]);
 
   const onSeletion = () => {
     if (!isActive) updateBoxInGame();
@@ -43,7 +43,7 @@ export const Box = ({ boxIndex }: { boxIndex: number }) => {
     }
 
     updateBoxInGame();
-  }, []);
+  }, [updateBoxInGame]);
 
   return (
     <div

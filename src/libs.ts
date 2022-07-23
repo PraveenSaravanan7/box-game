@@ -63,8 +63,7 @@ export const keyboardEventHandler = (
   box: HTMLDivElement,
   deleteBox: () => void
 ) => {
-  // calculating next
-  const step = 20;
+  const step = 30;
   const key = event.code;
   let left = Number(box.style.left.replace("px", ""));
   let top = Number(box.style.top.replace("px", ""));
