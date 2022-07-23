@@ -34,7 +34,14 @@ export const Box = () => {
     if (!isActive) updateBox();
   };
 
-  useEffect(updateBox, []);
+  useEffect(() => {
+    if (boxRef.current) {
+      boxRef.current.style.left = Math.floor(Math.random() * 500) + "px";
+      boxRef.current.style.top = Math.floor(Math.random() * 500) + "px";
+    }
+
+    updateBox();
+  }, []);
 
   return (
     <div
