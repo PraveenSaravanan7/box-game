@@ -17,7 +17,7 @@ export const Box = () => {
 
   const activeStyle = isActive ? styles.active : "";
 
-  const updateBox = () => {
+  const updateBoxInGame = () => {
     if (boxRef.current) {
       setIsActive(true);
 
@@ -31,7 +31,7 @@ export const Box = () => {
   };
 
   const onSeletion = () => {
-    if (!isActive) updateBox();
+    if (!isActive) updateBoxInGame();
   };
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export const Box = () => {
       boxRef.current.style.top = Math.floor(Math.random() * 500) + "px";
     }
 
-    updateBox();
+    updateBoxInGame();
   }, []);
 
   return (
