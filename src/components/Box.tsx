@@ -8,9 +8,10 @@ import styles from "./Box.module.css";
 export interface BoxElement {
   element: HTMLDivElement;
   deactivate: () => void;
+  index: number;
 }
 
-export const Box = () => {
+export const Box = ({ boxIndex }: { boxIndex: number }) => {
   const [isActive, setIsActive] = useState(true);
 
   const boxRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,7 @@ export const Box = () => {
         deactivate() {
           setIsActive(false);
         },
+        index: boxIndex,
       });
     }
   };

@@ -3,13 +3,18 @@ import { BoxElement } from "./components/Box";
 export class Game {
   private box?: BoxElement;
   private keyboardControl: boolean;
+  private isListnerOn: boolean;
   private handleKeyUp: (event: KeyboardEvent) => void;
+  onDeleteBox?: (index: number) => void;
 
   constructor() {
+    this.isListnerOn = false;
     this.keyboardControl = true;
     this.handleKeyUp = (event) => {
-      if (this.box?.element)
-        updateBoxWithNewPositions(event, this.box?.element);
+      if (this.box)
+        keyboardEventHandler(event, this.box?.element, () =>
+          this.deleteBox(this.box?.index || 0)
+        );
     };
 
     this.addListerns();
@@ -18,13 +23,17 @@ export class Game {
   updateBox(newBox: BoxElement) {
     this.box?.deactivate();
     this.box = newBox;
+
+    if (!this.isListnerOn && this.keyboardControl) this.addListerns();
   }
 
   private addListerns() {
+    this.isListnerOn = true;
     document.addEventListener("keyup", this.handleKeyUp);
   }
 
   private removeListner() {
+    this.isListnerOn = false;
     document.removeEventListener("keyup", this.handleKeyUp);
   }
 
@@ -41,33 +50,45 @@ export class Game {
   getControlState() {
     return this.keyboardControl;
   }
+
+  deleteBox(index: number) {
+    this.removeListner();
+    if (this.onDeleteBox) this.onDeleteBox(index);
+    this.box = undefined;
+  }
 }
 
-export const updateBoxWithNewPositions = (
+export const keyboardEventHandler = (
   event: KeyboardEvent,
-  box: HTMLDivElement
+  box: HTMLDivElement,
+  deleteBox: () => void
 ) => {
   // calculating next
   const step = 20;
-  const key = event.code.replace("Key", "");
+  const key = event.code;
   let left = Number(box.style.left.replace("px", ""));
   let top = Number(box.style.top.replace("px", ""));
 
   switch (key) {
-    case "A": {
+    case "KeyA": {
       left -= step;
       break;
     }
-    case "D": {
+    case "KeyD": {
       left += step;
       break;
     }
-    case "W": {
+    case "KeyW": {
       top -= step;
       break;
     }
-    case "S": {
+    case "KeyS": {
       top += step;
+      break;
+    }
+    case "Backspace":
+    case "Delete": {
+      deleteBox();
       break;
     }
   }
